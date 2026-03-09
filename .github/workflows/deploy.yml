@@ -19,9 +19,14 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
+        with:
+          cache-disabled: true # Временно отключаем кэш из-за сбоев GitHub
 
-      - name: Build Wasm Browser Distribution
-        run: ./gradlew :app:wasmJsBrowserDistribution
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
+      - name: Build Wasm
+        run: ./gradlew :app:wasmJsBrowserDistribution --no-daemon --stacktrace
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
